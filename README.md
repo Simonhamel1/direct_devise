@@ -27,6 +27,16 @@ python main.py
 
 2. Suivez les instructions à l'écran pour sélectionner les pays, entrer le montant à convertir, et obtenir le résultat de la conversion.
 
+## Algorithme de suggestion automatique
+Le convertisseur de devises inclut une fonctionnalité de suggestion automatique qui corrige les erreurs de saisie lorsque l'utilisateur entre le nom d'un pays.
+
+## Comment ça fonctionne ?
+Le programme utilise la distance de Levenshtein, une méthode de calcul de la similarité entre deux chaînes de caractères. Grâce à cette méthode, il est capable de comparer l'entrée de l'utilisateur avec la liste des pays disponibles et de proposer des suggestions en cas de fautes de frappe ou d'erreurs mineures.
+
+Exemple :
+```shell
+Si un utilisateur saisit "Fance" au lieu de "France", le programme propose automatiquement la correction suivante :
+```
 ## Pays disponibles
 
 - Afghanistan
