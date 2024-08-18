@@ -1,22 +1,33 @@
-from forex_python.converter import CurrencyRates
 import requests
 
-def convertir_devise(montant, devise_de, devise_a):
-    c = CurrencyRates()
+def obtenir_taux_change(devise_de, devise_a, api_key):
     try:
-        print(f"Tentative de récupération du taux de change pour {devise_de} vers {devise_a}")
-        # Effectuer une requête manuelle pour voir la réponse brute
-        response = requests.get(f"https://api.exchangeratesapi.io/latest?base={devise_de}&symbols={devise_a}")
-        print(f"Réponse brute de l'API: {response.text}")
-        taux = c.get_rate(devise_de, devise_a)
+        # Construire l'URL avec la clé API et les devises
+        url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{devise_de}"
+        response = requests.get(url)
+        data = response.json()
+        
+        if response.status_code != 200 or devise_a not in data['conversion_rates']:
+            print(f"Erreur : impossible de récupérer le taux pour {devise_de} vers {devise_a}.")
+            return None
+        
+        taux = data['conversion_rates'][devise_a]
         print(f"Taux de change récupéré: {taux}")
+        return taux
+    except Exception as e:
+        print(f"Erreur lors de la récupération du taux de change: {e}")
+        return None
+
+def convertir_devise(montant, devise_de, devise_a, api_key):
+    taux = obtenir_taux_change(devise_de, devise_a, api_key)
+    if taux is not None:
         montant_converti = montant * taux
         return montant_converti, taux
-    except Exception as e:
-        print(f"Erreur lors de la conversion: {e}")
+    else:
         return None, None
 
 if __name__ == "__main__":
+    api_key = "acd4d552c1ef2f1a183cb14a"  # Ta clé API
     devise_de = input("Entrez la devise de départ (par exemple, USD, EUR) : ").upper()
     devise_a = input("Entrez la devise cible (par exemple, USD, EUR) : ").upper()
     try:
@@ -25,7 +36,7 @@ if __name__ == "__main__":
         print("Le montant doit être un nombre.")
         exit(1)
 
-    resultat, taux = convertir_devise(montant, devise_de, devise_a)
+    resultat, taux = convertir_devise(montant, devise_de, devise_a, api_key)
     
     if resultat is not None:
         print(f"{montant} {devise_de} équivaut à {resultat:.2f} {devise_a} (Taux de change: {taux:.4f})")
