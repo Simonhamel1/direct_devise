@@ -202,7 +202,6 @@ countries_to_currency = {
 
 def obtenir_taux_change(devise_de, devise_a, api_key):
     try:
-        # Construire l'URL avec la clé API et les devises
         url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{devise_de}"
         response = requests.get(url)
         data = response.json()
