@@ -1,5 +1,23 @@
 import requests
 
+# Dictionnaire des pays et leurs devises
+countries_to_currency = {
+    "États-Unis": "USD",
+    "Canada": "CAD",
+    "Union Européenne": "EUR",
+    "Royaume-Uni": "GBP",
+    "Japon": "JPY",
+    "Australie": "AUD",
+    "Suisse": "CHF",
+    "Chine": "CNY",
+    "Inde": "INR",
+    "Russie": "RUB",
+    "Brésil": "BRL",
+    "Afrique du Sud": "ZAR",
+    "Mexique": "MXN"
+    # Ajoute ici d'autres pays et devises si nécessaire
+}
+
 def obtenir_taux_change(devise_de, devise_a, api_key):
     try:
         # Construire l'URL avec la clé API et les devises
@@ -25,20 +43,3 @@ def convertir_devise(montant, devise_de, devise_a, api_key):
         return montant_converti, taux
     else:
         return None, None
-
-if __name__ == "__main__":
-    api_key = "acd4d552c1ef2f1a183cb14a"  # Ta clé API
-    devise_de = input("Entrez la devise de départ (par exemple, USD, EUR) : ").upper()
-    devise_a = input("Entrez la devise cible (par exemple, USD, EUR) : ").upper()
-    try:
-        montant = float(input("Entrez le montant à convertir : "))
-    except ValueError:
-        print("Le montant doit être un nombre.")
-        exit(1)
-
-    resultat, taux = convertir_devise(montant, devise_de, devise_a, api_key)
-    
-    if resultat is not None:
-        print(f"{montant} {devise_de} équivaut à {resultat:.2f} {devise_a} (Taux de change: {taux:.4f})")
-    else:
-        print("La conversion a échoué.")
