@@ -1,4 +1,5 @@
 import requests
+import difflib
 
 # Dictionnaire des pays et leurs devises
 countries_to_currency = {
